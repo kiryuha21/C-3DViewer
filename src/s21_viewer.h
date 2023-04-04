@@ -5,6 +5,7 @@
 #define MAIN_STYLES_FILE "graphics/styles.css"
 
 #include <gtk/gtk.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +17,8 @@ typedef enum {
   FILE_READ_ERR,
   ALLOC_ERR,
   WRONG_COUNT_ERR,
-  INPUT_FORMAT_ERR
+  INPUT_FORMAT_ERR,
+  ZERO_SCALING_ERR
 } result_code_t;
 
 typedef struct coords {
@@ -40,5 +42,9 @@ typedef struct obj_data {
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data, const char *filename);
 result_code_t s21_write_obj_to_file(const obj_data *data, const char *filename);
 void s21_free_obj_data(obj_data *obj_data);
+
+void s21_move(obj_data *data, double x, double y, double z);
+result_code_t s21_scale(obj_data *data, double x, double y, double z);
+void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
 
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H
