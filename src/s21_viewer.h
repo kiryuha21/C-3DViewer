@@ -6,6 +6,7 @@
 
 #include <gtk/gtk.h>
 
-#define ERR (-1)  // TODO: replace with one of your structs or stdbool if you want
+#define ERR \
+  (-1)  // TODO: replace with one of your structs or stdbool if you want
 
-#endif //C8_3DVIEWER_V1_0_1_S21_VIEWER_H
+#endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H
