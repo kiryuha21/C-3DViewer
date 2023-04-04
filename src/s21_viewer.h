@@ -40,7 +40,11 @@ typedef struct obj_data {
 } obj_data;
 
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data, const char *filename);
+
 result_code_t s21_write_obj_to_file(const obj_data *data, const char *filename);
+result_code_t s21_write_coords_to_file(const obj_data *data,
+                                       const char *filename);
+
 void s21_free_obj_data(obj_data *obj_data);
 
 void s21_move(obj_data *data, double x, double y, double z);

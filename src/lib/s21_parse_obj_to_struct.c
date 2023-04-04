@@ -251,21 +251,6 @@ result_code_t get_data_from_file(obj_data *data, const char *file_name) {
   return result_code;
 }
 
-void s21_free_obj_data(obj_data *obj_data) {
-  free(obj_data->coords);
-
-  for (int i = 0; i < obj_data->count_of_facets; ++i) {
-    free(obj_data->facets[i].vertexes);
-  }
-
-  free(obj_data->facets);
-
-  obj_data->coords = NULL;
-  obj_data->facets = NULL;
-  obj_data->count_of_facets = 0;
-  obj_data->count_of_vertexes = 0;
-}
-
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
                                       const char *filename) {
   result_code_t result_code = get_counts_from_file(obj_data, filename);
@@ -279,38 +264,6 @@ result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
     if (result_code != SUCCESS) {
       s21_free_obj_data(obj_data);
     }
-  }
-
-  return result_code;
-}
-
-result_code_t s21_write_obj_to_file(const obj_data *data,
-                                    const char *filename) {
-  result_code_t result_code = SUCCESS;
-
-  FILE *file_to_write = fopen(filename, "w");
-  if (file_to_write == NULL) {
-    result_code = FILE_OPEN_ERR;
-  }
-
-  if (result_code == SUCCESS) {
-    for (int i = 0; i < data->count_of_vertexes; ++i) {
-      fprintf(file_to_write, "v %lf %lf %lf\n", data->coords[i].x,
-              data->coords[i].y, data->coords[i].z);
-    }
-
-    for (int i = 0; i < data->count_of_facets; ++i) {
-      fprintf(file_to_write, "f ");
-      for (int j = 0; j < data->facets[i].numbers_of_vertexes_in_facet; ++j) {
-        fprintf(
-            file_to_write, "v%d%c", data->facets[i].vertexes[j] + 1,
-            j == data->facets[i].numbers_of_vertexes_in_facet - 1 ? '\n' : ' ');
-      }
-    }
-  }
-
-  if (file_to_write != NULL) {
-    fclose(file_to_write);
   }
 
   return result_code;
