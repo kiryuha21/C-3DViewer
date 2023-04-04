@@ -1,0 +1,22 @@
+.root {
+	background: whitesmoke;
+}
+
+.header {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+
+.option-contents {
+	margin: 10px;
+}
+
+.option-labels {
+	font-size: 18px;
+}
+
+.render-button {
+	min-width: 200px;
+	border-radius: 10px;
+	font-size: 18px;
+}
