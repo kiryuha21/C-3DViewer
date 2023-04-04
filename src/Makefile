@@ -3,7 +3,7 @@
 CC = gcc
 
 GTK_FLAGS = `pkg-config --cflags gtk+-3.0`
-FLAGS = -Wall -Wextra -Werror -std=c11 -pedantic
+FLAGS = -Wall -Wextra -Werror -std=c11 -pedantic -D_GNU_SOURCE
 
 LINK_GTK = `pkg-config --libs gtk+-3.0`
 LINK_LIBRARIES = -lcheck
@@ -16,10 +16,8 @@ endif
 #endif
 
 SRC_C_FILES = lib/*.c main.c
-SRC_H_FILES = s21_viewer.h
 
 TEST_C_FILES = unit_tests/*.c
-TEST_H_FILES = unit_tests/*.h
 
 #COVERAGE_C_FILES = lib/polish_notation.c \
 # 				   lib/parser.c \
@@ -32,6 +30,7 @@ TEST_TARGET = s21_test
 TARGET = s21_viewer
 
 REPORT_DIR = report
+INCLUDE_DIR = -I .
 
 .PHONY: all clean install uninstall
 
@@ -56,10 +55,10 @@ clang:
 	clang-format -i */*.[ch]
 	rm -f .clang-format
 
-build: clang $(SRC_C_FILES) $(SRC_H_FILES)
-	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
+build: clang $(SRC_C_FILES)
+	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(INCLUDE_DIR) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 
-#test: clang $(SRC_C_FILES) $(SRC_H_FILES)
+#test: clang $(SRC_C_FILES)
 #	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(TEST_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES) -D _GNU_SOURCE
 #	./$(TEST_TARGET)
 

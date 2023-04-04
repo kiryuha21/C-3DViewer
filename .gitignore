@@ -3,6 +3,7 @@ CMakeLists.txt
 cmake-build-debug
 .idea
 src/report
+*.robj
 
 # Prerequisites
 *.d
@@ -10,7 +11,6 @@ src/report
 # Object files
 *.o
 *.ko
-*.obj
 *.elf
 
 # Linker output
