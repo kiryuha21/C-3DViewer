@@ -1,13 +1,13 @@
 #include "s21_viewer.h"
 
 int main(int argc, char* argv[]) {
-  obj_data data;
-  result_code_t result_code =
-      s21_parse_obj_to_struct(&data, "obj_files/test1.obj");
-  s21_write_obj_to_file(&data, "obj_files/test1.robj");
-  if (result_code == SUCCESS) {
-    s21_free_obj_data(&data);
-  }
+//  obj_data data;
+//  result_code_t result_code =
+//      s21_parse_obj_to_struct(&data, "obj_files/test1.obj");
+//  s21_write_obj_to_file(&data, "obj_files/test1.robj");
+//  if (result_code == SUCCESS) {
+//    s21_free_obj_data(&data);
+//  }
 
   gtk_init(&argc, &argv);
   GError* error = NULL;
