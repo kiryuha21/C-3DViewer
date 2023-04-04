@@ -60,13 +60,16 @@ void replace_char(char *str, char replaceable, char replacement) {
 
 result_code_t read_facet_from_line(char *line, facet_t *facet, int number) {
   result_code_t result_code = SUCCESS;
-  int size = 0;
 
-  char *str = line + 1;
-  skip_chars(&str, ' ');
-  while (*str) {
-    skip_until_char(&str, ' ');
-    skip_chars(&str, ' ');
+  skip_chars(&line, ' ');
+  ++line;
+  skip_chars(&line, ' ');
+  char *start = line;
+
+  int size = 0;
+  while (*line) {
+    skip_until_char(&line, ' ');
+    skip_chars(&line, ' ');
     ++size;
   }
 
@@ -79,13 +82,18 @@ result_code_t read_facet_from_line(char *line, facet_t *facet, int number) {
 
   if (result_code == SUCCESS) {
     int i = 0;
-    str = line + 1;
-    while (result_code == SUCCESS && *str) {
-      result_code = get_int_and_shift(&str, &facet[number].vertexes[i]);
-      facet[number].vertexes[i] -= 1;
-      ++i;
-      skip_until_char(&str, ' ');
-      skip_chars(&str, ' ');
+    line = start;
+    while (result_code == SUCCESS && *line && *line != '\n') {
+      if (*line != 'v' || *(line + 1) == ' ') {
+        free(facet[number].vertexes);
+        result_code = INPUT_FORMAT_ERR;
+      } else {
+        ++line;
+        result_code = get_int_and_shift(&line, &facet[number].vertexes[i]);
+        facet[number].vertexes[i] -= 1;
+        ++i;
+        skip_chars(&line, ' ');
+      }
     }
   }
 
@@ -142,7 +150,7 @@ result_code_t parse_line_to_facet(obj_data *data, char *line,
       for (int i = 0; i < *count_of_facets; ++i) {
         free(data->facets[i].vertexes);
       }
-      free(data->facets);
+      data->count_of_facets = 0;
     }
     ++(*count_of_facets);
   } else {
@@ -200,6 +208,7 @@ result_code_t alloc_obj_data(obj_data *data) {
 
     if (data->facets == NULL) {
       free(data->coords);
+      data->count_of_vertexes = 0;
       result_code = ALLOC_ERR;
     }
   }
@@ -253,6 +262,8 @@ void s21_free_obj_data(obj_data *obj_data) {
 
   obj_data->coords = NULL;
   obj_data->facets = NULL;
+  obj_data->count_of_facets = 0;
+  obj_data->count_of_vertexes = 0;
 }
 
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
@@ -292,7 +303,7 @@ result_code_t s21_write_obj_to_file(const obj_data *data,
       fprintf(file_to_write, "f ");
       for (int j = 0; j < data->facets[i].numbers_of_vertexes_in_facet; ++j) {
         fprintf(
-            file_to_write, "%d%c", data->facets[i].vertexes[j] + 1,
+            file_to_write, "v%d%c", data->facets[i].vertexes[j] + 1,
             j == data->facets[i].numbers_of_vertexes_in_facet - 1 ? '\n' : ' ');
       }
     }
