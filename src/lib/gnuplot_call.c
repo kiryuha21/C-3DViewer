@@ -35,7 +35,7 @@ void gnuplot_finished(GObject *source_object, GAsyncResult *res,
   g_print("Gnuplot Finished\n");
 }
 
-void call_gnuplot(gchar *cmd, gchar *script, GtkWidget *plot_image) {
+void execute_gnuplot_subprocess(gchar *cmd, gchar *script, GtkWidget *image) {
   GSubprocess *sub_process = g_subprocess_new(
       G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDERR_PIPE, NULL, cmd,
       NULL);
@@ -45,14 +45,14 @@ void call_gnuplot(gchar *cmd, gchar *script, GtkWidget *plot_image) {
   g_source_attach(source, NULL);
   g_source_set_callback(source, (GSourceFunc)read_err, NULL, NULL);
   g_subprocess_wait_async(sub_process, NULL,
-                          (GAsyncReadyCallback)gnuplot_finished, plot_image);
+                          (GAsyncReadyCallback)gnuplot_finished, image);
   GOutputStream *stream = g_subprocess_get_stdin_pipe(sub_process);
   g_output_stream_write(stream, script, strlen(script) + 1, NULL, NULL);
   g_output_stream_flush(stream, NULL, NULL);
   g_output_stream_close(stream, NULL, NULL);
 }
 
-void gnuplot_call_wrapper(GtkWidget *plot_image) {
+void call_gnuplot(GtkWidget *plot_image) {
   gint width = gtk_widget_get_allocated_width(plot_image);
   gint height = gtk_widget_get_allocated_height(plot_image);
 
@@ -61,7 +61,7 @@ void gnuplot_call_wrapper(GtkWidget *plot_image) {
       g_strdup_printf(GNUPLOT_FORMAT, width, height, IMAGE_OUTPUT, POINTS_FILE);
   g_print("%s\n", script);
 
-  call_gnuplot(cmd, script, plot_image);
+  execute_gnuplot_subprocess(cmd, script, plot_image);
 
   g_free(cmd);
   g_free(script);

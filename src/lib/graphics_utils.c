@@ -53,7 +53,7 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
         s21_rotate(&data, angles_delta);
 
         s21_write_coords_to_file(&data, POINTS_FILE);
-        gnuplot_call_wrapper(image);
+        call_gnuplot(image);
         s21_free_obj_data(&data);
       } else {
         gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
