@@ -162,21 +162,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="scale_entry">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="placeholder-text" translatable="yes">positive float-point number</property>
-            <style>
-              <class name="option-contents"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">2</property>
-            <property name="top-attach">2</property>
-            <property name="width">3</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkEntry" id="z_angle_delta_entry">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
@@ -263,6 +248,48 @@
             <property name="left-attach">0</property>
             <property name="top-attach">5</property>
             <property name="width">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="x_scale_delta_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">delta x</property>
+            <style>
+              <class name="option-contents"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">2</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="y_scale_delta_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">delta y</property>
+            <style>
+              <class name="option-contents"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">3</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="z_scale_delta_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">delta z</property>
+            <style>
+              <class name="option-contents"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">4</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
       </object>
