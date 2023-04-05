@@ -72,9 +72,9 @@ void s21_safe_fclose(FILE **file);
 void s21_safe_free(char **str);
 
 // s21_affine_transformations.c
-void s21_move(obj_data *data, double x, double y, double z);
-result_code_t s21_scale(obj_data *data, double x, double y, double z);
-void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
+void s21_move(obj_data *data, const coords_t *move_on);
+result_code_t s21_scale(obj_data *data, const coords_t *scale_on);
+void s21_rotate(obj_data *data, const coords_t *angles);
 
 bool is_null_or_empty(const gchar *string);
 GPtrArray *collect_delta_data(GtkBuilder *builder);
