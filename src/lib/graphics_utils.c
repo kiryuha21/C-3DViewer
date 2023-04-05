@@ -44,7 +44,7 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
       result_code_t result_code = s21_parse_obj_to_struct(&data, filename);
       if (result_code == SUCCESS) {
         coords_t* scales_delta = delta_data->pdata[0];
-        s21_scale(&data, scales_delta);
+        s21_scale(&data, scales_delta);  // TODO: check return value?
 
         coords_t* coords_delta = delta_data->pdata[1];
         s21_move(&data, coords_delta);
