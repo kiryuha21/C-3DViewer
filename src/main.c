@@ -1,6 +1,12 @@
 #include "s21_viewer.h"
 
 int main(int argc, char* argv[]) {
+  //  obj_data data;
+  //  s21_parse_obj_to_struct(&data, "obj_files/square.obj");
+  //  s21_rotate(&data, 90, 0, 0);
+  //  s21_write_obj_to_file(&data, "obj_files/square.robj");
+  //  s21_free_obj_data(&data);
+
   gtk_init(&argc, &argv);
   GError* error = NULL;
 

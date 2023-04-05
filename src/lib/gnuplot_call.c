@@ -52,7 +52,7 @@ void call_gnuplot(gchar *cmd, gchar *script, GtkWidget *plot_image) {
   g_output_stream_close(stream, NULL, NULL);
 }
 
-void gnuplot_call_wrapper(GtkWidget* plot_image) {
+void gnuplot_call_wrapper(GtkWidget *plot_image) {
   gint width = gtk_widget_get_allocated_width(plot_image);
   gint height = gtk_widget_get_allocated_height(plot_image);
 
