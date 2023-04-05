@@ -7,9 +7,8 @@ cmake-build-debug
 src/report
 
 # Runtime generics
-*.robj
-src/obj_files/points.txt
-src/graphics/rendered_image.png
+points.txt
+rendered_image.png
 
 # Prerequisites
 *.d

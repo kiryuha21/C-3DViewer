@@ -28,8 +28,9 @@ bool starts_with(char *str, const char *start) {
   return (*start) ? false : true;
 }
 
-bool line_ended(const char *line) {
-  return (*line == '\0' || *line == '\n') ? true : false;
+bool line_ended(char *line) {
+  skip_chars(&line, ' ');
+  return (*line == '\0' || *line == '\n' || *line == '#') ? true : false;
 }
 
 bool valid_obj(const obj_data *data) {
@@ -96,7 +97,6 @@ result_code_t read_vertex_from_line(obj_data *data, char *line, int number) {
   if (result_code == SUCCESS) {
     result_code = read_double_and_shift(&line, &data->coords[number].z);
   }
-  skip_chars(&line, ' ');
 
   if (line_ended(line) == false) {
     result_code = INPUT_FORMAT_ERR;
