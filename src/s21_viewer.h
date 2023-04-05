@@ -25,7 +25,7 @@
   "unset tics\n"                          \
   "set pm3d depth\n"                      \
   "set pm3d border lc \"black\" lw 1.5\n" \
-  "splot '%s' notitle with polygons fs transparent solid 0.8 fc bgnd"
+  "splot '%s' notitle with polygons fs transparent solid 0.8 fc \"gray75\""
 
 #define UNUSED(x) (void)(x)
 

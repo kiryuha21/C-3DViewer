@@ -2,9 +2,14 @@
 CMakeLists.txt
 cmake-build-debug
 .idea
+
+# Makefile target generics
 src/report
+
+# Runtime generics
 *.robj
-obj_files/points.txt
+src/obj_files/points.txt
+src/graphics/rendered_image.png
 
 # Prerequisites
 *.d
