@@ -32,12 +32,12 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
       GTK_WIDGET(gtk_builder_get_object(builder, "visualization_image"));
   GtkFileChooser* file_chooser =
       GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_selector"));
+  GObject* label = gtk_builder_get_object(builder, "viewer_label");
   GPtrArray* delta_data = collect_delta_data(builder);
 
   if (delta_data->len != 0) {
     gchar* filename = gtk_file_chooser_get_filename(file_chooser);
     if (is_null_or_empty(filename)) {
-      GObject* label = gtk_builder_get_object(builder, "viewer_label");
       gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
     } else {
       obj_data data;
@@ -55,6 +55,8 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
         s21_write_coords_to_file(&data, POINTS_FILE);
         gnuplot_call_wrapper(image);
         s21_free_obj_data(&data);
+      } else {
+        gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
       }
     }
     g_free(filename);

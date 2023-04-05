@@ -13,6 +13,7 @@
 #define IMAGE_OUTPUT "graphics/rendered_image.png"
 #define POINTS_FILE "obj_files/points.txt"
 
+#define INVALID_FILE_MSG "Invalid object file!"
 #define MISSING_FILE_MSG "Missing object file!"
 #define WRONG_INPUT_MSG "Wrong input data!"
 #define GNUPLOT_FORMAT                    \
