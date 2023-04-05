@@ -219,7 +219,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="vizualization_image">
+          <object class="GtkImage" id="visualization_image">
             <property name="width-request">800</property>
             <property name="height-request">500</property>
             <property name="visible">True</property>

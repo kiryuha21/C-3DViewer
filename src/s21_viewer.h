@@ -1,9 +1,6 @@
 #ifndef C8_3DVIEWER_V1_0_1_S21_VIEWER_H
 #define C8_3DVIEWER_V1_0_1_S21_VIEWER_H
 
-#define MAIN_UI_FILE "graphics/main.ui"
-#define STYLES_FILE "graphics/styles.css"
-
 #include <ctype.h>
 #include <gtk/gtk.h>
 #include <math.h>
@@ -11,10 +8,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAIN_UI_FILE "graphics/main.ui"
+#define STYLES_FILE "graphics/styles.css"
+#define IMAGE_OUTPUT "graphics/rendered_image.png"
+
 #define WRONG_INPUT_MSG "Wrong input data!"
-#define GNUPLOT_FORMAT                                                   \
-  "splot 'datafile.dat'\nset xyplane at 0\nset view equal xyz\nunset "   \
-  "border\nunset tics\nset pm3d depth\nset pm3d border lc \"black\" lw " \
+#define GNUPLOT_FORMAT                                                    \
+  "set terminal pngcairo size %d,%d\n set output '%s'\n set decimalsign " \
+  "locale\n"                                                              \
+  "splot 'datafile.dat'\nset xyplane at 0\nset view equal xyz\nunset "    \
+  "border\nunset tics\nset pm3d depth\nset pm3d border lc \"black\" lw "  \
   "1.5\nsplot 'datafile.dat' with polygons fs transparent solid 0.8 fc bgnd"
 
 #define UNUSED(x) (void)(x)

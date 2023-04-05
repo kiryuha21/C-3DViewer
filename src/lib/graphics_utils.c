@@ -30,13 +30,13 @@ void render_with_deltas(GtkWidget* widget, gpointer user_data) {
 
   GPtrArray* delta_data = collect_delta_data(user_data);
   if (delta_data->len != 0) {
-//    obj_data data;
-//    result_code_t result_code =
-//        s21_parse_obj_to_struct(&data, "obj_files/test1.obj");
-//    s21_write_coords_to_file(&data, "obj_files/test1.robj");
-//    if (result_code == SUCCESS) {
-//      s21_free_obj_data(&data);
-//    }
+    //    obj_data data;
+    //    result_code_t result_code =
+    //        s21_parse_obj_to_struct(&data, "obj_files/test1.obj");
+    //    s21_write_coords_to_file(&data, "obj_files/test1.robj");
+    //    if (result_code == SUCCESS) {
+    //      s21_free_obj_data(&data);
+    //    }
   }
   g_ptr_array_free(delta_data, false);
 }
@@ -54,6 +54,7 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
   GObject* x_angle = gtk_builder_get_object(builder, "x_angle_delta_entry");
   GObject* y_angle = gtk_builder_get_object(builder, "y_angle_delta_entry");
   GObject* z_angle = gtk_builder_get_object(builder, "z_angle_delta_entry");
+  GObject* image = gtk_builder_get_object(builder, "visualisation_image");
 
   const gchar* scale_text = gtk_entry_get_text(GTK_ENTRY(scale_entry));
   const gchar* x_coord_text = gtk_entry_get_text(GTK_ENTRY(x_coord));
@@ -76,6 +77,7 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
     g_ptr_array_add(delta_data, &scale_delta);
     g_ptr_array_add(delta_data, &coords);
     g_ptr_array_add(delta_data, &angles);
+    g_ptr_array_add(delta_data, GTK_WIDGET(image));
   }
 
   return delta_data;
