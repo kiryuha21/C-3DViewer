@@ -2,13 +2,22 @@
 #define C8_3DVIEWER_V1_0_1_S21_VIEWER_H
 
 #define MAIN_UI_FILE "graphics/main.ui"
-#define MAIN_STYLES_FILE "graphics/styles.css"
+#define STYLES_FILE "graphics/styles.css"
 
+#include <ctype.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define WRONG_INPUT_MSG "Wrong input data!"
+#define GNUPLOT_FORMAT                                                   \
+  "splot 'datafile.dat'\nset xyplane at 0\nset view equal xyz\nunset "   \
+  "border\nunset tics\nset pm3d depth\nset pm3d border lc \"black\" lw " \
+  "1.5\nsplot 'datafile.dat' with polygons fs transparent solid 0.8 fc bgnd"
+
+#define UNUSED(x) (void)(x)
 
 typedef enum {
   SUCCESS,
@@ -56,5 +65,9 @@ void s21_safe_free(char **str);
 void s21_move(obj_data *data, double x, double y, double z);
 result_code_t s21_scale(obj_data *data, double x, double y, double z);
 void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
+
+bool is_null_or_empty(const gchar *string);
+GPtrArray *collect_delta_data(GtkBuilder *builder);
+void render_with_deltas(GtkWidget *widget, gpointer user_data);
 
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H

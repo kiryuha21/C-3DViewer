@@ -1,4 +1,4 @@
-#include "s21_viewer.h"
+#include "../s21_viewer.h"
 
 void s21_free_obj_data(obj_data *obj_data) {
   free(obj_data->coords);

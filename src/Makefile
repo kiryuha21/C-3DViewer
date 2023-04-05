@@ -30,7 +30,6 @@ TEST_TARGET = s21_test
 TARGET = s21_viewer
 
 REPORT_DIR = report
-INCLUDE_DIR = -I .
 
 .PHONY: all clean install uninstall
 
@@ -56,7 +55,7 @@ clang:
 	rm -f .clang-format
 
 build: clang $(SRC_C_FILES)
-	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(INCLUDE_DIR) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
+	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 
 #test: clang $(SRC_C_FILES)
 #	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(TEST_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES) -D _GNU_SOURCE

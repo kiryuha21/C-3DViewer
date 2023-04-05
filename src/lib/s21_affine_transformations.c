@@ -1,4 +1,4 @@
-#include "s21_viewer.h"
+#include "../s21_viewer.h"
 
 void s21_move(obj_data *data, double x, double y, double z) {
   for (int i = 0; i < data->count_of_vertexes; i++) {

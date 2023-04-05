@@ -1,4 +1,4 @@
-#include "s21_viewer.h"
+#include "../s21_viewer.h"
 
 void skip_until_char(char **str, char ch) {
   while (**str != '\0' && **str != ch) {
