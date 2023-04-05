@@ -32,6 +32,23 @@ bool line_ended(const char *line) {
   return (*line == '\0' || *line == '\n') ? true : false;
 }
 
+bool valid_obj(const obj_data *data) {
+  bool result = true;
+
+  for (int i = 0; i < data->count_of_facets && result == true; ++i) {
+    for (int j = 0;
+         j < data->facets[i].numbers_of_vertexes_in_facet && result == true;
+         ++j) {
+      if (data->facets[i].vertexes[j] < 0 ||
+          data->facets[i].vertexes[j] > data->count_of_vertexes - 1) {
+        result = false;
+      }
+    }
+  }
+
+  return result;
+}
+
 result_code_t read_double_and_shift(char **str, double *res) {
   result_code_t result_code = SUCCESS;
 
@@ -256,7 +273,7 @@ result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
 
   if (result_code == SUCCESS) {
     result_code = get_data_from_file(obj_data, filename);
-    if (result_code != SUCCESS) {
+    if (result_code != SUCCESS || valid_obj(obj_data) == false) {
       s21_free_obj_data(obj_data);
     }
   }
