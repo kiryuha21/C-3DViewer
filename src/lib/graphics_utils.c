@@ -30,15 +30,17 @@ void render_with_deltas(GtkWidget* widget, gpointer user_data) {
 
   GPtrArray* delta_data = collect_delta_data(user_data);
   if (delta_data->len != 0) {
-    const gchar* filename = gtk_file_chooser_get_filename(delta_data->pdata[4]);
+    gchar* filename = gtk_file_chooser_get_filename(delta_data->pdata[4]);
 
     obj_data data;
     result_code_t result_code = s21_parse_obj_to_struct(&data, filename);
-    s21_write_coords_to_file(&data, POINTS_FILE);
-    gnuplot_call_wrapper(delta_data->pdata[3]);
     if (result_code == SUCCESS) {
       s21_free_obj_data(&data);
+      s21_write_coords_to_file(&data, POINTS_FILE);
+      gnuplot_call_wrapper(delta_data->pdata[3]);
     }
+
+    g_free(filename);
   }
   g_ptr_array_free(delta_data, false);
 }
