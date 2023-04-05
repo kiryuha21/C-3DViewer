@@ -14,3 +14,15 @@ void s21_free_obj_data(obj_data *obj_data) {
   obj_data->count_of_facets = 0;
   obj_data->count_of_vertexes = 0;
 }
+
+void s21_safe_fclose(FILE **file) {
+  if (*file != NULL) {
+    fclose(*file);
+  }
+}
+
+void s21_safe_free(char **str) {
+  if (*str != NULL) {
+    free(*str);
+  }
+}

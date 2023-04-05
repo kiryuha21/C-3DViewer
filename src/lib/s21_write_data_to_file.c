@@ -16,9 +16,7 @@ result_code_t s21_write_coords_to_file(const obj_data *data,
     }
   }
 
-  if (file_to_write != NULL) {
-    fclose(file_to_write);
-  }
+  s21_safe_fclose(&file_to_write);
 
   return result_code;
 }
@@ -48,9 +46,7 @@ result_code_t s21_write_obj_to_file(const obj_data *data,
     }
   }
 
-  if (file_to_write != NULL) {
-    fclose(file_to_write);
-  }
+  s21_safe_fclose(&file_to_write);
 
   return result_code;
 }

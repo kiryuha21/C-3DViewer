@@ -39,14 +39,20 @@ typedef struct obj_data {
   facet_t *facets;
 } obj_data;
 
+// s21_parse_obj_to_struct.c
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data, const char *filename);
 
+// s21_write_data_to_file.c
 result_code_t s21_write_obj_to_file(const obj_data *data, const char *filename);
 result_code_t s21_write_coords_to_file(const obj_data *data,
                                        const char *filename);
 
+// s21_free_obj_data.c
 void s21_free_obj_data(obj_data *obj_data);
+void s21_safe_fclose(FILE **file);
+void s21_safe_free(char **str);
 
+// s21_affine_transformations.c
 void s21_move(obj_data *data, double x, double y, double z);
 result_code_t s21_scale(obj_data *data, double x, double y, double z);
 void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
