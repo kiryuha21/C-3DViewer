@@ -4,6 +4,7 @@ cmake-build-debug
 .idea
 src/report
 *.robj
+obj_files/points.txt
 
 # Prerequisites
 *.d

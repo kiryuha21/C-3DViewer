@@ -11,14 +11,15 @@
 #define MAIN_UI_FILE "graphics/main.ui"
 #define STYLES_FILE "graphics/styles.css"
 #define IMAGE_OUTPUT "graphics/rendered_image.png"
+#define POINTS_FILE "obj_files/points.txt"
 
 #define WRONG_INPUT_MSG "Wrong input data!"
 #define GNUPLOT_FORMAT                                                    \
   "set terminal pngcairo size %d,%d\n set output '%s'\n set decimalsign " \
   "locale\n"                                                              \
-  "splot 'datafile.dat'\nset xyplane at 0\nset view equal xyz\nunset "    \
+  "set xyplane at 0\nset view equal xyz\nunset "                          \
   "border\nunset tics\nset pm3d depth\nset pm3d border lc \"black\" lw "  \
-  "1.5\nsplot 'datafile.dat' with polygons fs transparent solid 0.8 fc bgnd"
+  "1.5\nsplot '%s' with polygons fs transparent solid 0.8 fc bgnd"
 
 #define UNUSED(x) (void)(x)
 
@@ -72,5 +73,6 @@ void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
 bool is_null_or_empty(const gchar *string);
 GPtrArray *collect_delta_data(GtkBuilder *builder);
 void render_with_deltas(GtkWidget *widget, gpointer user_data);
+void gnuplot_call_wrapper(GtkWidget *plot_image);
 
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H
