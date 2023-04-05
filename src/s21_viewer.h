@@ -22,7 +22,9 @@
   "set xyplane at 0\n"                    \
   "set view equal xyz\n"                  \
   "unset border\n"                        \
-  "unset tics\n"                          \
+  "set xlabel \"X-Axis\"\n"               \
+  "set ylabel \"Y-Axis\"\n"               \
+  "set zlabel \"Z-Axis\"\n"               \
   "set pm3d depth\n"                      \
   "set pm3d border lc \"black\" lw 1.5\n" \
   "splot '%s' notitle with polygons fs transparent solid 0.8 fc \"gray75\""
