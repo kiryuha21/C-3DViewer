@@ -219,26 +219,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="visualization_image">
-            <property name="width-request">800</property>
-            <property name="height-request">500</property>
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="stock">gtk-missing-image</property>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">5</property>
-            <property name="width">5</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="render_button">
             <property name="label" translatable="yes">Render</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="halign">center</property>
+            <property name="margin-top">10</property>
             <style>
               <class name="render-button"/>
             </style>
@@ -246,6 +233,35 @@
           <packing>
             <property name="left-attach">0</property>
             <property name="top-attach">6</property>
+            <property name="width">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="width-request">800</property>
+            <property name="height-request">500</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="visualization_image">
+                    <property name="width-request">790</property>
+                    <property name="height-request">490</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
             <property name="width">5</property>
           </packing>
         </child>

@@ -25,19 +25,23 @@ bool convert_to_double(const gchar* string, double* val) {
   return return_val;
 }
 
-void render_with_deltas(GtkWidget* widget, gpointer user_data) {
+void render_with_deltas(GtkWidget* widget, gpointer builder) {
   UNUSED(widget);
 
-  GPtrArray* delta_data = collect_delta_data(user_data);
+  GPtrArray* delta_data = collect_delta_data(builder);
   if (delta_data->len != 0) {
     gchar* filename = gtk_file_chooser_get_filename(delta_data->pdata[4]);
-
-    obj_data data;
-    result_code_t result_code = s21_parse_obj_to_struct(&data, filename);
-    if (result_code == SUCCESS) {
-      s21_free_obj_data(&data);
-      s21_write_coords_to_file(&data, POINTS_FILE);
-      gnuplot_call_wrapper(delta_data->pdata[3]);
+    if (is_null_or_empty(filename)) {
+      GObject* label = gtk_builder_get_object(builder, "viewer_label");
+      gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
+    } else {
+      obj_data data;
+      result_code_t result_code = s21_parse_obj_to_struct(&data, filename);
+      if (result_code == SUCCESS) {
+        s21_write_coords_to_file(&data, POINTS_FILE);
+        gnuplot_call_wrapper(delta_data->pdata[3]);
+        s21_free_obj_data(&data);
+      }
     }
 
     g_free(filename);

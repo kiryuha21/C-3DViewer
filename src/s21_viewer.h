@@ -13,13 +13,19 @@
 #define IMAGE_OUTPUT "graphics/rendered_image.png"
 #define POINTS_FILE "obj_files/points.txt"
 
+#define MISSING_FILE_MSG "Missing object file!"
 #define WRONG_INPUT_MSG "Wrong input data!"
-#define GNUPLOT_FORMAT                                                    \
-  "set terminal pngcairo size %d,%d\n set output '%s'\n set decimalsign " \
-  "locale\n"                                                              \
-  "set xyplane at 0\nset view equal xyz\nunset "                          \
-  "border\nunset tics\nset pm3d depth\nset pm3d border lc \"black\" lw "  \
-  "1.5\nsplot '%s' with polygons fs transparent solid 0.8 fc bgnd"
+#define GNUPLOT_FORMAT                    \
+  "set terminal pngcairo size %d,%d\n"    \
+  "set output '%s'\n"                     \
+  "set decimalsign locale\n"              \
+  "set xyplane at 0\n"                    \
+  "set view equal xyz\n"                  \
+  "unset border\n"                        \
+  "unset tics\n"                          \
+  "set pm3d depth\n"                      \
+  "set pm3d border lc \"black\" lw 1.5\n" \
+  "splot '%s' notitle with polygons fs transparent solid 0.8 fc bgnd"
 
 #define UNUSED(x) (void)(x)
 
@@ -72,7 +78,7 @@ void s21_rotate(obj_data *data, double x_angle, double y_angle, double z_angle);
 
 bool is_null_or_empty(const gchar *string);
 GPtrArray *collect_delta_data(GtkBuilder *builder);
-void render_with_deltas(GtkWidget *widget, gpointer user_data);
+void render_with_deltas(GtkWidget *widget, gpointer builder);
 void gnuplot_call_wrapper(GtkWidget *plot_image);
 
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H
