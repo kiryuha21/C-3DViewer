@@ -19,12 +19,11 @@ SRC_C_FILES = lib/*.c main.c
 
 TEST_C_FILES = unit_tests/*.c
 
-#COVERAGE_C_FILES = lib/polish_notation.c \
-# 				   lib/parser.c \
-# 				   dynamic_structures/*.c \
-# 				   lib/utils.c \
-# 				   lib/datafile_generation.c \
-# 				   unit_tests/*.c
+COVERAGE_C_FILES = lib/s21_affine_transformations.c \
+ 				   lib/s21_free_obj_data.c \
+ 				   lib/parse_obj_to_struct.c \
+ 				   lib/write_data_to_file.c \
+ 				   unit_tests/*.c
 
 TEST_TARGET = s21_test
 TARGET = s21_viewer
@@ -57,17 +56,17 @@ clang:
 build: clang $(SRC_C_FILES)
 	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 
-#test: clang $(SRC_C_FILES)
-#	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(TEST_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES) -D _GNU_SOURCE
-#	./$(TEST_TARGET)
+test: clang $(SRC_C_FILES)
+	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(TEST_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
+	./$(TEST_TARGET)
 
-#gcov_report: clang
-#	$(CC) --coverage $(FLAGS) $(GTK_FLAGS) $(COVERAGE_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES) -D _GNU_SOURCE
-#	./$(TEST_TARGET)
-#	lcov -t "$(TEST_TARGET)" -o $(TEST_TARGET).info -c -d .
-#	genhtml -o report $(TEST_TARGET).info
-#	rm *.gcda *.gcno *.info
-#	open report/index.html
+gcov_report: clang
+	$(CC) --coverage $(FLAGS) $(GTK_FLAGS) $(COVERAGE_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
+	./$(TEST_TARGET)
+	lcov -t "$(TEST_TARGET)" -o $(TEST_TARGET).info -c -d .
+	genhtml -o report $(TEST_TARGET).info
+	rm *.gcda *.gcno *.info
+	open report/index.html
 
 cppcheck:
 	cppcheck --enable=all --suppress=missingIncludeSystem .
