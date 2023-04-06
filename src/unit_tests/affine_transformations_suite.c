@@ -22,7 +22,7 @@ result_code_t compare_files(FILE* fPtr1, FILE* fPtr2) {
   return res;
 }
 
-START_TEST(test1) {
+START_TEST(full_proc_test) {
   obj_data data;
 
   result_code_t result_code =
@@ -156,7 +156,7 @@ Suite* get_affine_transformations_suite() {
 
   suite_add_tcase(s, affine_transformations_cases);
 
-  tcase_add_test(affine_transformations_cases, test1);
+  tcase_add_test(affine_transformations_cases, full_proc_test);
   tcase_add_test(affine_transformations_cases, rotate);
   tcase_add_test(affine_transformations_cases, scale);
   tcase_add_test(affine_transformations_cases, move);

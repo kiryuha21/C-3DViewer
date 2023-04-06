@@ -32,7 +32,7 @@ REPORT_DIR = report
 
 .PHONY: all clean install uninstall
 
-all: clean build #test gcov_report dvi dist
+all: clean build test gcov_report dvi dist
 
 install: build
 	install ./$(TARGET) /usr/local/bin
