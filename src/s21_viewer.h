@@ -65,6 +65,7 @@ typedef struct obj_data {
 } obj_data;
 
 // s21_parse_obj_to_struct.c
+void replace_char(char *str, char replaceable, char replacement);
 result_code_t s21_parse_obj_to_struct(obj_data *obj_data, const char *filename);
 
 // s21_write_data_to_file.c

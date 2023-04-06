@@ -103,7 +103,7 @@ void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
       call_gnuplot(image);
     }
   }
-  for (int i = 0; i < 3; ++i) {
+  for (guint i = 0; i < delta_data->len; ++i) {
     free(delta_data->pdata[i]);
   }
   g_ptr_array_free(delta_data, true);
@@ -125,15 +125,23 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
   GObject* angle_obj = gtk_builder_get_object(builder, "angle_delta_entry");
   GObject* combo_object = gtk_builder_get_object(builder, "angle_combo_box");
 
-  const gchar* x_scale_text = gtk_entry_get_text(GTK_ENTRY(x_scale));
-  const gchar* y_scale_text = gtk_entry_get_text(GTK_ENTRY(y_scale));
-  const gchar* z_scale_text = gtk_entry_get_text(GTK_ENTRY(z_scale));
-  const gchar* x_coord_text = gtk_entry_get_text(GTK_ENTRY(x_coord));
-  const gchar* y_coord_text = gtk_entry_get_text(GTK_ENTRY(y_coord));
-  const gchar* z_coord_text = gtk_entry_get_text(GTK_ENTRY(z_coord));
-  const gchar* angle_text = gtk_entry_get_text(GTK_ENTRY(angle_obj));
+  gchar* x_scale_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(x_scale));
+  gchar* y_scale_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(y_scale));
+  gchar* z_scale_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(z_scale));
+  gchar* x_coord_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(x_coord));
+  gchar* y_coord_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(y_coord));
+  gchar* z_coord_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(z_coord));
+  gchar* angle_text = (gchar*)gtk_entry_get_text(GTK_ENTRY(angle_obj));
   GtkComboBoxText* angle_combo = GTK_COMBO_BOX_TEXT(combo_object);
   gchar* combo_text = gtk_combo_box_text_get_active_text(angle_combo);
+
+  replace_char(x_scale_text, '.', ',');
+  replace_char(y_scale_text, '.', ',');
+  replace_char(z_scale_text, '.', ',');
+  replace_char(x_coord_text, '.', ',');
+  replace_char(y_coord_text, '.', ',');
+  replace_char(z_coord_text, '.', ',');
+  replace_char(angle_text, '.', ',');
 
   double angle;
   if (convert_scale_to_double(x_scale_text, &scales->x) == false ||
@@ -145,9 +153,6 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
       convert_to_double(angle_text, &angle) == false) {
     GObject* label = gtk_builder_get_object(builder, "viewer_label");
     gtk_label_set_label(GTK_LABEL(label), WRONG_INPUT_MSG);
-    free(scales);
-    free(coords);
-    free(angles);
   } else {
     set_angle_struct(angles, combo_text, angle);
     g_ptr_array_add(delta_data, scales);
