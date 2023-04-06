@@ -40,12 +40,13 @@ install: build
 uninstall:
 	rm -rf /usr/local/bin/$(TARGET)
 
-#dvi:
-#	texi2dvi docs.tex
-#	open docs.dvi
+dvi: clean_dvi
+	doxygen Doxyfile
+	@mv html latex docs
+	open docs/html/index.html
 
-#dist: build
-#	tar -czvf $(TARGET).tgz $(TARGET) graphics/*
+dist: build
+	tar -czvf $(TARGET).tgz $(TARGET) graphics/*
 
 clang:
 	cp ../materials/linters/.clang-format .
@@ -88,9 +89,7 @@ clean_gcov:
 	rm -f *.gc*
 
 clean_dvi:
-	rm -rf *.aux
-	rm -rf *.log
-	rm -rf *.dvi
+	rm -rf docs/*
 
 clean_dist:
 	rm -rf $(TARGET).tgz

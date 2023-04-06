@@ -5,6 +5,7 @@ cmake-build-debug
 
 # Makefile target generics
 src/report
+src/docs
 
 # Runtime generics
 points.txt
