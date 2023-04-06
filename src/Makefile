@@ -1,5 +1,3 @@
-# TODO: uncomment and implement all targets
-
 CC = gcc
 
 GTK_FLAGS = `pkg-config --cflags gtk+-3.0`
@@ -32,7 +30,7 @@ REPORT_DIR = report
 
 .PHONY: all clean install uninstall
 
-all: clean build test gcov_report dvi dist
+all: clean build tests gcov_report dvi dist
 
 install: build
 	install ./$(TARGET) /usr/local/bin
@@ -58,7 +56,7 @@ clang:
 build: clang $(SRC_C_FILES)
 	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 
-test: clang $(SRC_C_FILES)
+tests: clang $(SRC_C_FILES)
 	$(CC) $(FLAGS) $(GTK_FLAGS) $(COVERAGE_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 	./$(TEST_TARGET)
 
