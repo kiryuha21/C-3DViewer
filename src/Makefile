@@ -41,6 +41,7 @@ uninstall:
 	rm -rf /usr/local/bin/$(TARGET)
 
 dvi: clean_dvi
+	mkdir -p docs
 	doxygen Doxyfile
 	@mv html latex docs
 	open docs/html/index.html
