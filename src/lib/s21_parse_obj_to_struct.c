@@ -185,6 +185,7 @@ result_code_t get_counts_from_file(obj_data *data, const char *file_name) {
   char *line = NULL;
   size_t cap = 0;
   while (result_code == SUCCESS && getline(&line, &cap, obj_file) != -1) {
+    replace_char(line, '.', ',');
     if (line == NULL) {
       result_code = FILE_READ_ERR;
     } else if (starts_with(line, "v ") == true) {
@@ -235,7 +236,7 @@ result_code_t get_data_from_file(obj_data *data, const char *file_name) {
   char *line = NULL;
   size_t cap = 0;
   while (result_code == SUCCESS && getline(&line, &cap, obj_file) != -1) {
-    replace_char(line, ',', '.');
+    replace_char(line, '.', ',');
     if (line == NULL) {
       result_code = FILE_READ_ERR;
     } else if (starts_with(line, "v ") == true) {
