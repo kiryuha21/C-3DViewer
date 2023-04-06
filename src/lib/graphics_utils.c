@@ -25,8 +25,12 @@ bool convert_to_double(const gchar* string, double* val) {
   return return_val;
 }
 
-void render_with_deltas(GtkWidget* widget, gpointer builder) {
+void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
   UNUSED(widget);
+
+  GPtrArray* array = ptr_array;
+  GtkBuilder* builder = array->pdata[0];
+  obj_data* data = array->pdata[1];
 
   GtkWidget* image =
       GTK_WIDGET(gtk_builder_get_object(builder, "visualization_image"));
@@ -40,22 +44,22 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
     if (is_null_or_empty(filename)) {
       gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
     } else {
-      obj_data data;
-      result_code_t result_code = s21_parse_obj_to_struct(&data, filename);
+      result_code_t result_code = SUCCESS;
+      if (data->coords == NULL) {
+        result_code = s21_parse_obj_to_struct(data, filename);
+      }
       if (result_code == SUCCESS) {
         coords_t* scales_delta = delta_data->pdata[0];
-        s21_scale(&data, scales_delta);  // TODO: check return value?
+        s21_scale(data, scales_delta);  // TODO: check return value?
 
         coords_t* coords_delta = delta_data->pdata[1];
-        s21_move(&data, coords_delta);
+        s21_move(data, coords_delta);
 
         coords_t* angles_delta = delta_data->pdata[2];
-        s21_rotate(&data, angles_delta);
+        s21_rotate(data, angles_delta);
 
-        // s21_write_obj_to_file(&data, filename);  // TODO: uncomment when func fixed
-        s21_write_coords_to_file(&data, POINTS_FILE);
+        s21_write_coords_to_file(data, POINTS_FILE);
         call_gnuplot(image);
-        s21_free_obj_data(&data);
       } else {
         gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
       }

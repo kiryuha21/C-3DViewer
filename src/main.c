@@ -24,11 +24,20 @@ int main(int argc, char* argv[]) {
   GObject* main_window = gtk_builder_get_object(builder, "main_window");
   g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+  obj_data* object = calloc(1, sizeof(obj_data));
+  GPtrArray* data = g_ptr_array_new();
+  g_ptr_array_add(data, builder);
+  g_ptr_array_add(data, object);
+
   GObject* render_button = gtk_builder_get_object(builder, "render_button");
   g_signal_connect(render_button, "clicked", G_CALLBACK(render_with_deltas),
-                   builder);
+                   data);
 
   gtk_main();
+
+  s21_free_obj_data(object);
+  free(object);
+  g_ptr_array_free(data, false);
 
   return 0;
 }
