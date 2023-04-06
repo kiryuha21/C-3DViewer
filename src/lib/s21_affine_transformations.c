@@ -41,8 +41,8 @@ void rotate_on_y(coords_t *coords, double angle) {
 void rotate_on_z(coords_t *coords, double angle) {
   angle = to_degrees(angle);
   double x = coords->x, y = coords->y;
-  coords->x = x * cos(angle) - y * sin(angle);
-  coords->y = x * sin(angle) + y * cos(angle);
+  coords->x = x * cos(angle) + y * sin(angle);
+  coords->y = -x * sin(angle) + y * cos(angle);
 }
 
 void s21_rotate(obj_data *data, const coords_t *angles) {
