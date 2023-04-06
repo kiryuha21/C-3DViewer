@@ -3,6 +3,7 @@
 
 #include <ctype.h>
 #include <gtk/gtk.h>
+#include <locale.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>

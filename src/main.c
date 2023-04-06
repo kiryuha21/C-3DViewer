@@ -1,6 +1,7 @@
 #include "s21_viewer.h"
 
 int main(int argc, char* argv[]) {
+  setlocale(LC_NUMERIC, "ru_RU.UTF-8");
   gtk_init(&argc, &argv);
   GError* error = NULL;
 
