@@ -71,6 +71,32 @@ void load_file(GtkWidget* widget, gpointer ptr_array) {
   g_free(filename);
 }
 
+void show_render_info(GtkBuilder* builder, obj_data* data) {
+  GtkLabel* label = GTK_LABEL(gtk_builder_get_object(builder, "viewer_label"));
+  GtkFileChooser* file_chooser =
+      GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_selector"));
+
+  gchar* filename = gtk_file_chooser_get_filename(file_chooser);
+  char* cutted_ptr = strrchr(filename, '/');
+  char* cutted_path = NULL;
+  if (cutted_ptr == NULL) {
+    cutted_path = calloc(strlen(filename) + 1, sizeof(char));
+    strcpy(cutted_path, filename);
+  } else {
+    cutted_path = calloc(strlen(cutted_ptr), sizeof(char));
+    strcpy(cutted_path, cutted_ptr + 1);
+  }
+
+  gchar* fstring = calloc(200, sizeof(char*));
+  sprintf(fstring, "Rendered %s with %d facets and %d vertexes", cutted_path,
+          data->count_of_facets, data->count_of_vertexes);
+
+  gtk_label_set_label(label, fstring);
+  g_free(filename);
+  free(cutted_path);
+  free(fstring);
+}
+
 void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
   UNUSED(widget);
 
@@ -101,6 +127,7 @@ void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
 
       s21_write_coords_to_file(data, POINTS_FILE);
       call_gnuplot(image);
+      show_render_info(builder, data);
     }
   }
   for (guint i = 0; i < delta_data->len; ++i) {
