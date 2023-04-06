@@ -87,4 +87,7 @@ void render_with_deltas(GtkWidget *widget, gpointer builder);
 void load_file(GtkWidget *widget, gpointer ptr_array);
 void call_gnuplot(GtkWidget *plot_image);
 
+// TODO: REMOVE
+result_code_t s21_make_right_obj(const char *filename);
+
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H

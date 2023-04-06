@@ -271,3 +271,106 @@ result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
 
   return result_code;
 }
+
+// TODO: REMOVE EVERYTHING FROM BELOW
+
+result_code_t get_counts_from_file_with_wrong_lines(obj_data *data,
+                                                    const char *file_name) {
+  result_code_t result_code = SUCCESS;
+
+  data->count_of_facets = 0;
+  data->count_of_vertexes = 0;
+
+  FILE *obj_file = fopen(file_name, "r");
+  if (obj_file == NULL) {
+    result_code = FILE_OPEN_ERR;
+  }
+
+  char *line = NULL;
+  size_t cap = 0;
+  while (result_code == SUCCESS && getline(&line, &cap, obj_file) != -1) {
+    replace_char(line, '.', ',');
+    if (line == NULL) {
+      result_code = FILE_READ_ERR;
+    } else if (starts_with(line, "v ") == true) {
+      ++data->count_of_vertexes;
+    } else if (starts_with(line, "f ") == true) {
+      ++data->count_of_facets;
+    }
+  }
+
+  free(line);
+  s21_safe_fclose(&obj_file);
+
+  return result_code;
+}
+
+result_code_t get_data_from_file_with_wrong_lines(obj_data *data,
+                                                  const char *file_name) {
+  result_code_t result_code = SUCCESS;
+  int current_vertex = 0, current_facet = 0;
+
+  FILE *obj_file = fopen(file_name, "r");
+  if (obj_file == NULL) {
+    result_code = FILE_OPEN_ERR;
+  }
+
+  char *line = NULL;
+  size_t cap = 0;
+  while (result_code == SUCCESS && getline(&line, &cap, obj_file) != -1) {
+    replace_char(line, '.', ',');
+    if (line == NULL) {
+      result_code = FILE_READ_ERR;
+    } else if (starts_with(line, "v ") == true) {
+      result_code = parse_line_to_vertex(data, line, &current_vertex);
+    } else if (starts_with(line, "f ") == true) {
+      result_code = parse_line_to_facet(data, line, &current_facet);
+    }
+  }
+
+  s21_safe_free(&line);
+  s21_safe_fclose(&obj_file);
+
+  return result_code;
+}
+
+result_code_t s21_parse_obj_to_struct_with_wrong_lines(obj_data *obj_data,
+                                                       const char *filename) {
+  result_code_t result_code = get_counts_from_file(obj_data, filename);
+
+  if (result_code == SUCCESS) {
+    result_code = alloc_obj_data(obj_data);
+  }
+
+  if (result_code == SUCCESS) {
+    result_code = get_data_from_file(obj_data, filename);
+    if (result_code != SUCCESS || valid_obj(obj_data) == false) {
+      s21_free_obj_data(obj_data);
+    }
+  }
+
+  return result_code;
+}
+
+result_code_t s21_make_right_obj(const char *filename) {
+  obj_data temp;
+  result_code_t result_code =
+      get_counts_from_file_with_wrong_lines(&temp, filename);
+
+  if (result_code == SUCCESS) {
+    result_code = alloc_obj_data(&temp);
+  }
+
+  if (result_code == SUCCESS) {
+    result_code = get_data_from_file_with_wrong_lines(&temp, filename);
+    if (result_code != SUCCESS || valid_obj(&temp) == false) {
+      s21_free_obj_data(&temp);
+    }
+  }
+
+  if (result_code == SUCCESS) {
+    result_code = s21_write_obj_to_file(&temp, filename);
+  }
+
+  return result_code;
+}
