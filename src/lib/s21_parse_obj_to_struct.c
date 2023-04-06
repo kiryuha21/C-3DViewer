@@ -251,6 +251,10 @@ result_code_t get_data_from_file(obj_data *data, const char *file_name) {
   s21_safe_free(&line);
   s21_safe_fclose(&obj_file);
 
+  if (valid_obj(data) == false) {
+    result_code = INPUT_FORMAT_ERR;
+  }
+
   return result_code;
 }
 
@@ -264,7 +268,7 @@ result_code_t s21_parse_obj_to_struct(obj_data *obj_data,
 
   if (result_code == SUCCESS) {
     result_code = get_data_from_file(obj_data, filename);
-    if (result_code != SUCCESS || valid_obj(obj_data) == false) {
+    if (result_code != SUCCESS) {
       s21_free_obj_data(obj_data);
     }
   }
