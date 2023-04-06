@@ -25,6 +25,16 @@ bool convert_to_double(const gchar* string, double* val) {
   return return_val;
 }
 
+bool convert_scale_to_double(const gchar* string, double* val) {
+  bool return_val = true;
+  if (is_null_or_empty(string)) {
+    *val = 1;
+  } else {
+    return_val = convert_to_double(string, val);
+  }
+  return return_val;
+}
+
 void load_file(GtkWidget* widget, gpointer ptr_array) {
   UNUSED(widget);
 
@@ -60,15 +70,18 @@ void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
 
   GtkWidget* image =
       GTK_WIDGET(gtk_builder_get_object(builder, "visualization_image"));
-  GObject* label = gtk_builder_get_object(builder, "viewer_label");
+  GtkLabel* label = GTK_LABEL(gtk_builder_get_object(builder, "viewer_label"));
   GPtrArray* delta_data = collect_delta_data(builder);
 
   if (delta_data->len != 0) {
     if (data->coords == NULL) {
-      gtk_label_set_label(GTK_LABEL(label), FILE_NOT_LOADED_MSG);
+      gtk_label_set_label(label, FILE_NOT_LOADED_MSG);
     } else {
       coords_t* scales_delta = delta_data->pdata[0];
-      s21_scale(data, scales_delta);  // TODO: check return value?
+      result_code_t scale_res = s21_scale(data, scales_delta);
+      if (scale_res != SUCCESS) {
+        gtk_label_set_label(label, ZERO_SCALE_MSG);
+      }
 
       coords_t* coords_delta = delta_data->pdata[1];
       s21_move(data, coords_delta);
@@ -113,9 +126,9 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
   const gchar* y_angle_text = gtk_entry_get_text(GTK_ENTRY(y_angle));
   const gchar* z_angle_text = gtk_entry_get_text(GTK_ENTRY(z_angle));
 
-  if (convert_to_double(x_scale_text, &scales->x) == false ||
-      convert_to_double(y_scale_text, &scales->y) == false ||
-      convert_to_double(z_scale_text, &scales->z) == false ||
+  if (convert_scale_to_double(x_scale_text, &scales->x) == false ||
+      convert_scale_to_double(y_scale_text, &scales->y) == false ||
+      convert_scale_to_double(z_scale_text, &scales->z) == false ||
       convert_to_double(x_coord_text, &coords->x) == false ||
       convert_to_double(y_coord_text, &coords->y) == false ||
       convert_to_double(z_coord_text, &coords->z) == false ||

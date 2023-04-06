@@ -14,6 +14,7 @@
 #define IMAGE_OUTPUT "graphics/rendered_image.png"
 #define POINTS_FILE "obj_files/points.txt"
 
+#define ZERO_SCALE_MSG "Cannot scale on zero!"
 #define FILE_NOT_LOADED_MSG "File not loaded!"
 #define INVALID_FILE_MSG "Invalid object file!"
 #define MISSING_FILE_MSG "Missing object file!"
