@@ -45,7 +45,7 @@ result_code_t s21_write_obj_to_file(const obj_data *data,
       fprintf(file_to_write, "f ");
       for (int j = 0; j < data->facets[i].numbers_of_vertexes_in_facet; ++j) {
         fprintf(
-            file_to_write, "v%d%c", data->facets[i].vertexes[j] + 1,
+            file_to_write, "%d%c", data->facets[i].vertexes[j] + 1,
             j == data->facets[i].numbers_of_vertexes_in_facet - 1 ? '\n' : ' ');
       }
     }
