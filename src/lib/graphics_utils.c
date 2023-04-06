@@ -40,6 +40,9 @@ void load_file(GtkWidget* widget, gpointer ptr_array) {
   if (is_null_or_empty(filename)) {
     gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
   } else {
+    if (data->coords != NULL) {
+      s21_free_obj_data(data);
+    }
     result_code_t result_code = s21_parse_obj_to_struct(data, filename);
     if (result_code != SUCCESS) {
       gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
@@ -76,6 +79,9 @@ void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
       s21_write_coords_to_file(data, POINTS_FILE);
       call_gnuplot(image);
     }
+  }
+  for (int i = 0; i < 3; ++i) {
+    free(delta_data->pdata[i]);
   }
   g_ptr_array_free(delta_data, true);
 }
@@ -118,6 +124,9 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
       convert_to_double(z_angle_text, &angles->z) == false) {
     GObject* label = gtk_builder_get_object(builder, "viewer_label");
     gtk_label_set_label(GTK_LABEL(label), WRONG_INPUT_MSG);
+    free(scales);
+    free(coords);
+    free(angles);
   } else {
     g_ptr_array_add(delta_data, scales);
     g_ptr_array_add(delta_data, coords);

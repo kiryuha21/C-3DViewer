@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
   s21_free_obj_data(object);
   free(object);
-  g_ptr_array_free(data, false);
+  g_ptr_array_free(data, true);
 
   return 0;
 }
