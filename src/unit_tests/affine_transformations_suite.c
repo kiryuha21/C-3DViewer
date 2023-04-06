@@ -77,6 +77,77 @@ START_TEST(test1) {
 }
 END_TEST
 
+START_TEST(rotate) {
+  obj_data data;
+  data.count_of_vertexes = 1;
+  data.count_of_facets = 0;
+
+  data.coords = (coords_t*)calloc(1, sizeof(coords_t));
+  ck_assert_ptr_nonnull(data.coords);
+  data.coords[0].x = 1;
+  data.coords[0].y = 0;
+  data.coords[0].z = 0;
+  coords_t angles = {45, 0, 0};
+  s21_rotate(&data, &angles);
+
+  ck_assert_double_eq_tol(data.coords[0].x, 1, EPS);
+  ck_assert_double_eq_tol(data.coords[0].y, 0, EPS);
+  ck_assert_double_eq_tol(data.coords[0].z, 0, EPS);
+
+  angles.x = 0;
+  angles.y = 45;
+  s21_rotate(&data, &angles);
+
+  ck_assert_double_eq_tol(data.coords[0].x, sqrt(2) / 2, EPS);
+  ck_assert_double_eq_tol(data.coords[0].y, 0, EPS);
+  ck_assert_double_eq_tol(data.coords[0].z, -sqrt(2) / 2, EPS);
+
+  free(data.coords);
+}
+END_TEST
+
+START_TEST(move) {
+  obj_data data;
+  data.count_of_vertexes = 1;
+  data.count_of_facets = 0;
+
+  data.coords = (coords_t*)calloc(1, sizeof(coords_t));
+  ck_assert_ptr_nonnull(data.coords);
+  data.coords[0].x = 4;
+  data.coords[0].y = 5;
+  data.coords[0].z = 6;
+  coords_t move_on = {11, 12, 13};
+  s21_move(&data, &move_on);
+
+  ck_assert_double_eq_tol(data.coords[0].x, 15, EPS);
+  ck_assert_double_eq_tol(data.coords[0].y, 17, EPS);
+  ck_assert_double_eq_tol(data.coords[0].z, 19, EPS);
+
+  free(data.coords);
+}
+END_TEST
+
+START_TEST(scale) {
+  obj_data data;
+  data.count_of_vertexes = 1;
+  data.count_of_facets = 0;
+
+  data.coords = (coords_t*)calloc(1, sizeof(coords_t));
+  ck_assert_ptr_nonnull(data.coords);
+  data.coords[0].x = 3;
+  data.coords[0].y = 2;
+  data.coords[0].z = 0;
+  coords_t scale_on = {10, 0.1, 1000};
+  s21_scale(&data, &scale_on);
+
+  ck_assert_double_eq_tol(data.coords[0].x, 30, EPS);
+  ck_assert_double_eq_tol(data.coords[0].y, 0.2, EPS);
+  ck_assert_double_eq_tol(data.coords[0].z, 0, EPS);
+
+  free(data.coords);
+}
+END_TEST
+
 Suite* get_affine_transformations_suite() {
   Suite* s = suite_create("affine_transformations_suite");
 
@@ -86,6 +157,9 @@ Suite* get_affine_transformations_suite() {
   suite_add_tcase(s, affine_transformations_cases);
 
   tcase_add_test(affine_transformations_cases, test1);
+  tcase_add_test(affine_transformations_cases, rotate);
+  tcase_add_test(affine_transformations_cases, scale);
+  tcase_add_test(affine_transformations_cases, move);
 
   return s;
 }
