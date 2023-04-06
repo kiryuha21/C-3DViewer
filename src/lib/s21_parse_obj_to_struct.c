@@ -28,9 +28,9 @@ bool starts_with(char *str, const char *start) {
   return (*start) ? false : true;
 }
 
-bool line_ended(char **line) {
-  skip_chars(line, ' ');
-  return (**line == '\0' || **line == '\n' || **line == '#') ? true : false;
+bool line_ended(char *line) {
+  skip_chars(&line, ' ');
+  return (*line == '\0' || *line == '\n' || *line == '#') ? true : false;
 }
 
 bool valid_obj(const obj_data *data) {
@@ -95,7 +95,7 @@ result_code_t read_vertex_from_line(obj_data *data, char *line, int number) {
     result_code = read_double_and_shift(&line, &data->coords[number].z);
   }
 
-  if (line_ended(&line) == false) {
+  if (line_ended(line) == false) {
     result_code = INPUT_FORMAT_ERR;
   }
 
@@ -124,7 +124,8 @@ result_code_t read_facet_from_line(char *line, facet_t *facet, int number) {
   char *start = line;
 
   int size = 0;
-  while (line_ended(&line) == false) {
+  while (line_ended(line) == false) {
+    skip_chars(&line, ' ');
     skip_until_char(&line, ' ');
     ++size;
   }
@@ -139,7 +140,8 @@ result_code_t read_facet_from_line(char *line, facet_t *facet, int number) {
   if (result_code == SUCCESS) {
     int i = 0;
     line = start;
-    while (result_code == SUCCESS && line_ended(&line) == false) {
+    while (result_code == SUCCESS && line_ended(line) == false) {
+      skip_chars(&line, ' ');
       result_code = read_int_and_shift(&line, &facet[number].vertexes[i]);
       facet[number].vertexes[i] -= 1;
       ++i;
@@ -189,12 +191,12 @@ result_code_t get_counts_from_file(obj_data *data, const char *file_name) {
       ++data->count_of_vertexes;
     } else if (starts_with(line, "f ") == true) {
       ++data->count_of_facets;
-    } else if (starts_with(line, "#") == false && line_ended(&line) == false) {
+    } else if (starts_with(line, "#") == false && line_ended(line) == false) {
       result_code = INPUT_FORMAT_ERR;
     }
   }
 
-  s21_safe_free(&line);
+  free(line);
   s21_safe_fclose(&obj_file);
 
   return result_code;
@@ -240,7 +242,7 @@ result_code_t get_data_from_file(obj_data *data, const char *file_name) {
       result_code = parse_line_to_vertex(data, line, &current_vertex);
     } else if (starts_with(line, "f ") == true) {
       result_code = parse_line_to_facet(data, line, &current_facet);
-    } else if (starts_with(line, "#") == false && line_ended(&line) == false) {
+    } else if (starts_with(line, "#") == false && line_ended(line) == false) {
       result_code = INPUT_FORMAT_ERR;
     }
   }
