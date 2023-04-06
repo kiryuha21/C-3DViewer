@@ -52,6 +52,7 @@ void render_with_deltas(GtkWidget* widget, gpointer builder) {
         coords_t* angles_delta = delta_data->pdata[2];
         s21_rotate(&data, angles_delta);
 
+        // s21_write_obj_to_file(&data, filename);  // TODO: uncomment when func fixed
         s21_write_coords_to_file(&data, POINTS_FILE);
         call_gnuplot(image);
         s21_free_obj_data(&data);
