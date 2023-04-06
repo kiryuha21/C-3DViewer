@@ -21,8 +21,8 @@ TEST_C_FILES = unit_tests/*.c
 
 COVERAGE_C_FILES = lib/s21_affine_transformations.c \
  				   lib/s21_free_obj_data.c \
- 				   lib/parse_obj_to_struct.c \
- 				   lib/write_data_to_file.c \
+ 				   lib/s21_parse_obj_to_struct.c \
+ 				   lib/s21_write_data_to_file.c \
  				   unit_tests/*.c
 
 TEST_TARGET = s21_test
@@ -58,7 +58,7 @@ build: clang $(SRC_C_FILES)
 	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) -o $(TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 
 test: clang $(SRC_C_FILES)
-	$(CC) $(FLAGS) $(GTK_FLAGS) $(SRC_C_FILES) $(TEST_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
+	$(CC) $(FLAGS) $(GTK_FLAGS) $(COVERAGE_C_FILES) -o $(TEST_TARGET) $(LINK_GTK) $(LINK_LIBRARIES)
 	./$(TEST_TARGET)
 
 gcov_report: clang

@@ -6,6 +6,7 @@
 #include "../s21_viewer.h"
 
 #define SUITES_COUNT 4
+#define EPS 1e-6
 
 Suite* get_affine_transformations_suite();
 Suite* get_deallocation_suite();
