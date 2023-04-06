@@ -26,23 +26,23 @@ double to_degrees(double val) { return val * M_PI / 180; }
 
 void rotate_on_x(coords_t *coords, double angle) {
   angle = to_degrees(angle);
-  double y_st = coords->y;
-  coords->y = coords->y * cos(angle) + coords->z * sin(angle);
-  coords->z = -y_st * sin(angle) + coords->z * cos(angle);
+  double z = coords->z, y = coords->y;
+  coords->y = y * cos(angle) + z * sin(angle);
+  coords->z = -y * sin(angle) + z * cos(angle);
 }
 
 void rotate_on_y(coords_t *coords, double angle) {
   angle = to_degrees(angle);
-  double x_st = coords->x;
-  coords->x = coords->x * cos(angle) + coords->z * sin(angle);
-  coords->z = -x_st * sin(angle) + coords->z * cos(angle);
+  double z = coords->z, x = coords->x;
+  coords->x = x * cos(angle) + z * sin(angle);
+  coords->z = -x * sin(angle) + z * cos(angle);
 }
 
 void rotate_on_z(coords_t *coords, double angle) {
   angle = to_degrees(angle);
-  double x_st = coords->x;
-  coords->x = coords->x * cos(angle) - coords->y * sin(angle);
-  coords->y = -x_st * sin(angle) + coords->y * cos(angle);
+  double x = coords->x, y = coords->y;
+  coords->x = x * cos(angle) - y * sin(angle);
+  coords->y = x * sin(angle) + y * cos(angle);
 }
 
 void s21_rotate(obj_data *data, const coords_t *angles) {
