@@ -35,6 +35,16 @@ bool convert_scale_to_double(const gchar* string, double* val) {
   return return_val;
 }
 
+void set_angle_struct(coords_t* angles, gchar* choice, double value) {
+  if (strcmp(choice, "x") == 0) {
+    angles->x = value;
+  } else if (strcmp(choice, "y") == 0) {
+    angles->y = value;
+  } else if (strcmp(choice, "z") == 0) {
+    angles->z = value;
+  }
+}
+
 void load_file(GtkWidget* widget, gpointer ptr_array) {
   UNUSED(widget);
 
@@ -112,9 +122,8 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
   GObject* x_coord = gtk_builder_get_object(builder, "x_coord_delta_entry");
   GObject* y_coord = gtk_builder_get_object(builder, "y_coord_delta_entry");
   GObject* z_coord = gtk_builder_get_object(builder, "z_coord_delta_entry");
-  GObject* x_angle = gtk_builder_get_object(builder, "x_angle_delta_entry");
-  GObject* y_angle = gtk_builder_get_object(builder, "y_angle_delta_entry");
-  GObject* z_angle = gtk_builder_get_object(builder, "z_angle_delta_entry");
+  GObject* angle_obj = gtk_builder_get_object(builder, "angle_delta_entry");
+  GObject* combo_object = gtk_builder_get_object(builder, "angle_combo_box");
 
   const gchar* x_scale_text = gtk_entry_get_text(GTK_ENTRY(x_scale));
   const gchar* y_scale_text = gtk_entry_get_text(GTK_ENTRY(y_scale));
@@ -122,29 +131,30 @@ GPtrArray* collect_delta_data(GtkBuilder* builder) {
   const gchar* x_coord_text = gtk_entry_get_text(GTK_ENTRY(x_coord));
   const gchar* y_coord_text = gtk_entry_get_text(GTK_ENTRY(y_coord));
   const gchar* z_coord_text = gtk_entry_get_text(GTK_ENTRY(z_coord));
-  const gchar* x_angle_text = gtk_entry_get_text(GTK_ENTRY(x_angle));
-  const gchar* y_angle_text = gtk_entry_get_text(GTK_ENTRY(y_angle));
-  const gchar* z_angle_text = gtk_entry_get_text(GTK_ENTRY(z_angle));
+  const gchar* angle_text = gtk_entry_get_text(GTK_ENTRY(angle_obj));
+  GtkComboBoxText* angle_combo = GTK_COMBO_BOX_TEXT(combo_object);
+  gchar* combo_text = gtk_combo_box_text_get_active_text(angle_combo);
 
+  double angle;
   if (convert_scale_to_double(x_scale_text, &scales->x) == false ||
       convert_scale_to_double(y_scale_text, &scales->y) == false ||
       convert_scale_to_double(z_scale_text, &scales->z) == false ||
       convert_to_double(x_coord_text, &coords->x) == false ||
       convert_to_double(y_coord_text, &coords->y) == false ||
       convert_to_double(z_coord_text, &coords->z) == false ||
-      convert_to_double(x_angle_text, &angles->x) == false ||
-      convert_to_double(y_angle_text, &angles->y) == false ||
-      convert_to_double(z_angle_text, &angles->z) == false) {
+      convert_to_double(angle_text, &angle) == false) {
     GObject* label = gtk_builder_get_object(builder, "viewer_label");
     gtk_label_set_label(GTK_LABEL(label), WRONG_INPUT_MSG);
     free(scales);
     free(coords);
     free(angles);
   } else {
+    set_angle_struct(angles, combo_text, angle);
     g_ptr_array_add(delta_data, scales);
     g_ptr_array_add(delta_data, coords);
     g_ptr_array_add(delta_data, angles);
   }
+  g_free(combo_text);
 
   return delta_data;
 }
