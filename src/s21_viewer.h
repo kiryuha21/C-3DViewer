@@ -14,6 +14,7 @@
 #define IMAGE_OUTPUT "graphics/rendered_image.png"
 #define POINTS_FILE "obj_files/points.txt"
 
+#define FILE_NOT_LOADED_MSG "File not loaded!"
 #define INVALID_FILE_MSG "Invalid object file!"
 #define MISSING_FILE_MSG "Missing object file!"
 #define WRONG_INPUT_MSG "Wrong input data!"
@@ -83,6 +84,7 @@ void s21_rotate(obj_data *data, const coords_t *angles);
 bool is_null_or_empty(const gchar *string);
 GPtrArray *collect_delta_data(GtkBuilder *builder);
 void render_with_deltas(GtkWidget *widget, gpointer builder);
+void load_file(GtkWidget *widget, gpointer ptr_array);
 void call_gnuplot(GtkWidget *plot_image);
 
 #endif  // C8_3DVIEWER_V1_0_1_S21_VIEWER_H

@@ -25,6 +25,29 @@ bool convert_to_double(const gchar* string, double* val) {
   return return_val;
 }
 
+void load_file(GtkWidget* widget, gpointer ptr_array) {
+  UNUSED(widget);
+
+  GPtrArray* array = ptr_array;
+  GtkBuilder* builder = array->pdata[0];
+  obj_data* data = array->pdata[1];
+
+  GtkFileChooser* file_chooser =
+      GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_selector"));
+  GObject* label = gtk_builder_get_object(builder, "viewer_label");
+
+  gchar* filename = gtk_file_chooser_get_filename(file_chooser);
+  if (is_null_or_empty(filename)) {
+    gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
+  } else {
+    result_code_t result_code = s21_parse_obj_to_struct(data, filename);
+    if (result_code != SUCCESS) {
+      gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
+    }
+  }
+  g_free(filename);
+}
+
 void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
   UNUSED(widget);
 
@@ -34,37 +57,25 @@ void render_with_deltas(GtkWidget* widget, gpointer ptr_array) {
 
   GtkWidget* image =
       GTK_WIDGET(gtk_builder_get_object(builder, "visualization_image"));
-  GtkFileChooser* file_chooser =
-      GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_selector"));
   GObject* label = gtk_builder_get_object(builder, "viewer_label");
   GPtrArray* delta_data = collect_delta_data(builder);
 
   if (delta_data->len != 0) {
-    gchar* filename = gtk_file_chooser_get_filename(file_chooser);
-    if (is_null_or_empty(filename)) {
-      gtk_label_set_label(GTK_LABEL(label), MISSING_FILE_MSG);
+    if (data->coords == NULL) {
+      gtk_label_set_label(GTK_LABEL(label), FILE_NOT_LOADED_MSG);
     } else {
-      result_code_t result_code = SUCCESS;
-      if (data->coords == NULL) {
-        result_code = s21_parse_obj_to_struct(data, filename);
-      }
-      if (result_code == SUCCESS) {
-        coords_t* scales_delta = delta_data->pdata[0];
-        s21_scale(data, scales_delta);  // TODO: check return value?
+      coords_t* scales_delta = delta_data->pdata[0];
+      s21_scale(data, scales_delta);  // TODO: check return value?
 
-        coords_t* coords_delta = delta_data->pdata[1];
-        s21_move(data, coords_delta);
+      coords_t* coords_delta = delta_data->pdata[1];
+      s21_move(data, coords_delta);
 
-        coords_t* angles_delta = delta_data->pdata[2];
-        s21_rotate(data, angles_delta);
+      coords_t* angles_delta = delta_data->pdata[2];
+      s21_rotate(data, angles_delta);
 
-        s21_write_coords_to_file(data, POINTS_FILE);
-        call_gnuplot(image);
-      } else {
-        gtk_label_set_label(GTK_LABEL(label), INVALID_FILE_MSG);
-      }
+      s21_write_coords_to_file(data, POINTS_FILE);
+      call_gnuplot(image);
     }
-    g_free(filename);
   }
   g_ptr_array_free(delta_data, true);
 }

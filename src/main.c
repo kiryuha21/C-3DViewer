@@ -30,6 +30,10 @@ int main(int argc, char* argv[]) {
   g_ptr_array_add(data, builder);
   g_ptr_array_add(data, object);
 
+  GObject* load_file_button =
+      gtk_builder_get_object(builder, "load_file_button");
+  g_signal_connect(load_file_button, "clicked", G_CALLBACK(load_file), data);
+
   GObject* render_button = gtk_builder_get_object(builder, "render_button");
   g_signal_connect(render_button, "clicked", G_CALLBACK(render_with_deltas),
                    data);

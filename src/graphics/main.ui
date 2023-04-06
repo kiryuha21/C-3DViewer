@@ -116,7 +116,7 @@
           <packing>
             <property name="left-attach">2</property>
             <property name="top-attach">1</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -290,6 +290,22 @@
           <packing>
             <property name="left-attach">4</property>
             <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="load_file_button">
+            <property name="label" translatable="yes">Load file</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <style>
+              <class name="option-contents"/>
+              <class name="load-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">4</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
       </object>
